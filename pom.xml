@@ -3,13 +3,13 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.holisticon.course</groupId>
-	<artifactId>nim-kotlin-workshop</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<groupId>com.example</groupId>
+	<artifactId>demo</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-	<name>nim-kotlin-workshop</name>
-	<description>Demo project for kotlin and Spring Boot</description>
+	<name>demo</name>
+	<description>The Nim game in an enterprisey way.</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -22,29 +22,19 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<kotlin.version>1.2.61</kotlin.version>
-
-
-		<!-- Need at least 1.1.x for compatibility with Surefire -->
-		<junit-platform.version>1.1.1</junit-platform.version>
-
-		<!-- Need at least 5.1.x for compatibility with Surefire -->
-		<junit-jupiter.version>5.1.1</junit-jupiter.version>
-
-		<!-- TODO remove once a newer version of surefire (2.21.1+) is compatible with JUnit 5 and used by Spring Boot -->
-		<!-- Reference: https://github.com/junit-team/junit5/issues/809 -->
-		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+		<kotlin.version>1.2.71</kotlin.version>
+		<httpclient.version>4.5.6</httpclient.version>
+		<jackson-annotations.version>2.9.6</jackson-annotations.version>
 		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
-		<mockk.version>1.8.6</mockk.version>
 		<kotlin-logging.version>1.5.9</kotlin-logging.version>
 		<kotlinx-coroutines-core.version>0.25.0</kotlinx-coroutines-core.version>
-		<reactor-bus.version>2.0.8.RELEASE</reactor-bus.version>
-		<jackson-annotations.version>2.9.6</jackson-annotations.version>
-		<httpclient.version>4.5.6</httpclient.version>
 		<mapstruct-jdk8.version>1.2.0.Final</mapstruct-jdk8.version>
+		<reactor-bus.version>2.0.8.RELEASE</reactor-bus.version>
 	</properties>
 
 	<modules>
+		<module>commons</module>
+		<module>game-server</module>
 	</modules>
 
 	<dependencies>
@@ -52,18 +42,18 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct-jdk8</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Own artifacts -->
+			<dependency>
+				<groupId>com.example</groupId>
+				<artifactId>commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- Mapstruct -->
 			<dependency>
 				<groupId>org.mapstruct</groupId>
 				<artifactId>mapstruct-jdk8</artifactId>
@@ -74,11 +64,14 @@
 				<artifactId>mapstruct</artifactId>
 				<version>${mapstruct-jdk8.version}</version>
 			</dependency>
+
+			<!-- Swagger -->
 			<dependency>
-				<groupId>com.example</groupId>
-				<artifactId>commons</artifactId>
-				<version>${project.version}</version>
+				<groupId>io.toolisticon.springboot</groupId>
+				<artifactId>springboot-swagger-starter</artifactId>
+				<version>0.0.4</version>
 			</dependency>
+
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
@@ -98,42 +91,6 @@
 				<groupId>io.projectreactor</groupId>
 				<artifactId>reactor-core</artifactId>
 				<version>${reactor-bus.version}</version>
-			</dependency>
-			<!-- JUnit 5, mockk-->
-			<dependency>
-				<groupId>org.junit.platform</groupId>
-				<artifactId>junit-platform-launcher</artifactId>
-				<scope>test</scope>
-				<version>${junit-platform.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.platform</groupId>
-				<artifactId>junit-platform-engine</artifactId>
-				<scope>test</scope>
-				<version>${junit-platform.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<scope>test</scope>
-				<version>${junit-jupiter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-engine</artifactId>
-				<scope>test</scope>
-				<version>${junit-jupiter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-params</artifactId>
-				<version>${junit-jupiter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.mockk</groupId>
-				<artifactId>mockk</artifactId>
-				<version>${mockk.version}</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>io.github.microutils</groupId>
@@ -164,7 +121,12 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${maven-surefire-plugin.version}</version>
 				</plugin>
-
+				<plugin>
+					<!-- for generating stubs -->
+					<groupId>io.swagger</groupId>
+					<artifactId>swagger-codegen-maven-plugin</artifactId>
+					<version>2.3.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -181,6 +143,7 @@
 						<configuration>
 							<sourceDirs>
 								<sourceDir>src/main/kotlin</sourceDir>
+								<sourceDir>src/main/java</sourceDir>
 							</sourceDirs>
 							<compilerPlugins>
 								<plugin>spring</plugin>
