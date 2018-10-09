@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import reactor.bus.Event
-import reactor.bus.EventBus
 import java.net.URI
 import javax.validation.Valid
 
@@ -27,9 +25,7 @@ import javax.validation.Valid
 @RestController
 class GameRestController(
         private val gameRepository: GameRepository,
-        private val gameEngine: GameEngine,
-        private val eventBus: EventBus,
-        private val mapper: TurnNotificationMapper) : GameApi {
+        private val gameEngine: GameEngine) : GameApi {
 
     companion object : KLogging()
 
@@ -103,7 +99,6 @@ class GameRestController(
 
         if (validation.isValid()) {
             val savedGame = gameRepository.save(playedGame)
-            eventBus.notify("newTurn ${savedGame.id}", Event.wrap(mapper.gameEntityToTurnNotification(game)))
             val gameDto = GameDto().apply {
                 this.id = savedGame.id
                 this.initialItems = savedGame.initialItems
