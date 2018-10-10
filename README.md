@@ -143,3 +143,58 @@ Diese Instanz können wir dazu nutzen, Daten über den Websocket zu versenden:
   
 Weiterhin ließe sich in die Klasse `TurnNotificationHandler` eine Instanz der Klasse `GameRepository` injizieren, um weitere
 Spieldaten aus der Datenbank zu beziehen.
+
+## MapStruct
+
+Wir beenden Aufgabe 2 mit der Einführung eines Tools zur Konvertierung von Value-Objects.
+
+In diesem Projekt hantieren wir mit Instanzen der Klasse `GameEntity` und unterschiedlichen, davon
+abgeleiteten Klassen.
+
+Mit MapStruct ist es möglich Mappings von der Klasse `GameEntity` beispielsweise nach `TurnNotification` zu definieren.
+
+Dazu fügen wir folgende Klasse in das Server-Projekt ein.
+
+```kotlin
+import com.example.demo.common.model.TurnNotification
+import com.example.demo.entity.GameEntity
+import mu.KLogging
+import org.mapstruct.*
+import javax.annotation.PostConstruct
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
+abstract class TurnNotificationMapper {
+
+    companion object : KLogging()
+
+    @Mappings(
+            Mapping(source = "id", target = "id"),
+            Mapping(source = "id", target = "gameId"),
+            Mapping(source = "remainingItems", target = "remainingItems"),
+            Mapping(source = "finished", target = "finished"),
+            Mapping(source = "nextPlayer", target = "nextPlayer"),
+            Mapping(source = "winner", target = "winner")
+    )
+    abstract fun gameEntityToTurnNotification(gameEntity: GameEntity): TurnNotification
+
+    @InheritInverseConfiguration
+    abstract fun turnNotificationToGameEntity(turnNotification: TurnNotification): GameEntity
+
+    @PostConstruct
+    fun startUp() {
+        logger.info { "TurnNotificationMapper started ..." }
+    }
+}
+```
+
+Diese Klasse `TurnNotificationMapper` lässt sich nun über Dependency-Injection in alle anderen zum Spring-Kontext
+gehörenden Klassen nutzen.
+
+Beispielsweise im `GameRestController`, beim Auslösen eines Spielzug-Ereignisses 
+
+  ```kotlin
+  val notification: TurnNotification = turnNotificationMapper.gameEntityToTurnNotification(gameEntity) ; 
+  simpMessagingTemplate.convertAndSend("/topic/turns/${gameEntity.id}", notification))
+  ```
+
+
