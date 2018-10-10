@@ -34,9 +34,29 @@ Dieses Interface soll ein JPA-Repository für die Entity `GameEntity` sein.
 
 In der Datei `GameEngine.kt` soll eine Klasse `GameEngine` als Spring-Service angelegt werden.
 
+
+### Datenklasse ValidationResult
+
 In der Datei `GameEngine.kt` soll weiterhin eine Datenklasse `ValidationResult` angelegt werden.
 
 `ValidationResult` soll eine Funktion `isValid()` anbieten, deren Rückgabewert den Typ Boolean hat.
+
+Die Klasse soll ein Set (`MutableSet` von `String`) enthalten. In diesem Set sollen Fehlermeldungen als Strings
+gespeichert werden, die nach einer Validierung eines Spielzugs anfallen.
+
+`isValid()` soll den Wert `true` zurückgeben, wenn das o.g. Set leer ist.
+
+### Validierung von Spielzügen
+
+Ein Spielzug ist nicht valide wenn:
+- er auf einem Spiel ausgeführt werden soll, `game.finished` den Wert `true` hat
+- ein Spieler einen Spielzug macht, der gemäß der Property `game.nextPlayer` nicht an der Reihe ist
+- durch einen Spielzug mehr Hölzer genommen werden sollen, als in `gameEntity.remainingItems` verfügbar sind.
+
+Für jede fehlgeschlagene Validierung soll eine Fehlemeldung in das Set in `ValidationResult`
+
+
+### Funktion play()
 
 Diese Klasse `GameEngine` soll genau eine Funktion `play()` implementieren. Deren Parameter sollen sein:
 
@@ -67,4 +87,4 @@ Methoden implementieren
 
 Die Klasse soll ein Spring Rest-Controller sein.
 
-Über Dependency-Injection solle die Klassen `GameRepository` und `GameEngine` injziert werden.
+Über Dependency-Injection sollen die Klassen `GameRepository` und `GameEngine` injziert werden.
