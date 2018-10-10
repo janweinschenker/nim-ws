@@ -34,6 +34,28 @@ Dieses Interface soll ein JPA-Repository für die Entity `GameEntity` sein.
 
 In der Datei `GameEngine.kt` soll eine Klasse `GameEngine` als Spring-Service angelegt werden.
 
+#### Tipp: Logging mit KLogging
+
+In diesem Projekt ist das Logging mit dem Framework KLogging verfügbar.
+
+Durch diese Anweisung:
+
+```kotlin
+class GameEngine {
+
+    /**
+     * define KLogging() as companion object
+     */
+   companion object : KLogging()
+```
+
+Wird der Logger folgendermaßen verfügbar gemacht:
+
+```kotlin
+   // ...
+   logger.debug{"This is a log message"}
+   // ...
+```
 
 ### Datenklasse ValidationResult
 
