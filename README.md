@@ -142,3 +142,16 @@ mit Fehlerstatuscode 400 (Bad Request) zurückgegeben werden.
 
 Bei einem Spielzug für ein nicht existierendes Spiel (Spiel-ID in DB unbekannt) soll eine HTTP-Response
 mit Fehlerstatuscode 404 (Not Found) zurückgegeben werden.
+
+
+#### Tipp: Werfen von Exceptions, um in REST-Controllern HTTP-Fehlercodes zurückzugeben
+
+In der Datei `GameRestController.kt` kann folgende Exception definiert werden.
+
+```kotlin
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Game does not exist.")
+class GameNotFoundException : RuntimeException()
+```
+
+Wird die `GameNotFoundException` in einer Funktion geworfen, die auf einen HTTP-Endpunkt gemappt ist,
+so gibt dieser Endpunkt als Response den hier definierten HTTP-Fehlercode zurück. 
