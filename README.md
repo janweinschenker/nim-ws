@@ -92,3 +92,54 @@ val turnNotification = toTurnNotification(gameEntity)
 eventBus.notify("newTurn ${savedGame.id}", Event.wrap(turnNotification))
 ```  
 
+Ein Spielzug sollte nun dazu führen, dass im `TurnNotificationHandler` die Methode `handleNotification()` aufgerufen wird. 
+
+## Websocket
+
+### Klasse WebSocketConfig
+
+Über ein Websocket propagiert der Spielserver Statusinformationen. Für die Bereitstellung des Websockets
+benötigen wir eine offene Configuration-Klasse, z.B. mit dem Namen `WebSocketConfig`. Diese Klasse mit von 
+`org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer` und mit folgenden
+Annotationen versehen werden:
+
+- `org.springframework.context.annotation.Configuration`
+- `org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker`
+
+Wir müssen folgende zwei Methoden überschreiben:
+
+```kotlin
+    override fun configureMessageBroker(registry: MessageBrokerRegistry) {
+        registry.enableSimpleBroker("/topic")
+    }
+
+    override fun registerStompEndpoints(registry: StompEndpointRegistry) {
+        registry.addEndpoint("/turns", "/messages")
+    }
+```
+
+Damit richten wir zwei Websocket-Topics ein:
+- `/topic/turns`
+  - Über dieses Topic werden wir Instanzen der Klasse `TurnNotification` versenden.
+- `/topic/messages`
+  - Über dieses Topic werden wir textuelle Nachrichten vom Typ `String` versenden.
+  
+  
+### Klasse TurnNotificationHandler
+
+In die Klasse `TurnNotificationHandler` injizieren wir eine Instanz von `org.springframework.messaging.simp.SimpMessagingTemplate`.
+
+Diese Instanz können wir dazu nutzen, Daten über den Websocket zu versenden:
+
+- Über das Message-Topic:
+  ```kotlin
+  simpMessagingTemplate.convertAndSend("/topic/messages/${gameEntity.id}", com.example.demo.common.model.Message(text))
+  ```
+- Über das Turns-Topic:
+  ```kotlin
+  val notification: TurnNotification = ... ; 
+  simpMessagingTemplate.convertAndSend("/topic/turns/${gameEntity.id}", notification))
+  ```
+  
+Weiterhin ließe sich in die Klasse `TurnNotificationHandler` eine Instanz der Klasse `GameRepository` injizieren, um weitere
+Spieldaten aus der Datenbank zu beziehen.
