@@ -43,6 +43,27 @@ dass es für eine bestimmte Spiel-ID eine Änderung gegeben hat.
 Bis auf weiteres beschränken wir uns an dieser Stelle darauf, den Inhalt der `TurnNotification` als Log-Ausgabe 
 auf der Konsole auszugeben.
 
+#### Tipp: Single-Expression Functions
+Funktionen, die nur eine einizuge Anweisung enthalten ("Einzeiler"), können ohne geschweifte Klammern geschrieben werden.
+
+Beispiel:
+
+```kotlin
+// This:
+fun double(x: Int): Int { 
+    return x * 2
+}
+
+// ... is equivalent to:
+fun double(x: Int): Int = x * 2
+
+// ... or even:
+fun double(x: Int) = x * 2
+```
+
+Single-Expression Functions bieten sich ebenfalls an, wenn man mit Lambdas, if- und when-Anweisungen
+arbeitet. Das gleiche gilt für Extension-Functions wie also(), apply(), let(), takeIf() etc.
+
 ### TurnNotificationConsumer
 
 Der `TurnNotificationHandler` wird nicht direkt durch den Eventbus aufgerufen. Damit das passiert bauen wir nun 
