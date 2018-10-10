@@ -88,3 +88,42 @@ Methoden implementieren
 Die Klasse soll ein Spring Rest-Controller sein.
 
 Über Dependency-Injection sollen die Klassen `GameRepository` und `GameEngine` injziert werden.
+
+Es müssen drei Funktionen implementiert werden.
+
+### getGames()
+
+Diese Funktion soll alle vorhandenen Entitäten vom Typ `GameEntity` aus der Datenbank abfragen. Danach sollen
+sie auf den Typ `GameDto` konvertiert werden und als `ResponseEntity<List<GameDto>>` zurückgegeben werden.
+
+### createGame()
+
+Diese Funktion soll ein neues Spiel anlegen. Aus dem Funktionsparameter vom Typ `NewGameDto` soll eine
+Instanz von `GameEntity` erzeugt und persistiert werden.
+
+Als Rückgabewert soll eine URL auf das neu angelegte Spiel zurückgegeben werden. Beispiel:
+
+```kotlin
+return ResponseEntity
+    .created(URI("/game/${gameEntity.id}")
+    .build()
+```
+   
+
+### play()
+
+Diese Funktion führt einen Spielzug durch. Als Parameter werden die Spiel-ID und
+die Daten des durchzuführenden Spielzugs übergeben.
+
+Zunächst muss anhand der Spiel-ID das existierende Spiel als `GameEntity` aus der Datenbank geladen werden.
+
+Danach wird die `GameEntity` zusammen mit der Anzahl der genommenen Hölzer und dem Spielertyp an die
+Funktion `GameEngine.play()` übergeben.
+
+Bei einem validen Spielzug soll der neue Spielzustand persistiert und als `GameDto` zurück gegeben werden.
+
+Bei einem nicht validen Spielzug soll sich der Spielzustand nicht ändern und stattdessen eine HTTP-Response
+mit Fehlerstatuscode 400 (Bad Request) zurückgegeben werden.
+
+Bei einem Spielzug für ein nicht existierendes Spiel (Spiel-ID in DB unbekannt) soll eine HTTP-Response
+mit Fehlerstatuscode 404 (Not Found) zurückgegeben werden.
