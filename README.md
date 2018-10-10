@@ -96,6 +96,21 @@ Es müssen drei Funktionen implementiert werden.
 Diese Funktion soll alle vorhandenen Entitäten vom Typ `GameEntity` aus der Datenbank abfragen. Danach sollen
 sie auf den Typ `GameDto` konvertiert werden und als `ResponseEntity<List<GameDto>>` zurückgegeben werden.
 
+#### Tipp: Konvertieren mit .apply()
+
+```kotlin
+ gameRepository // gibt GameEntity zurück in der Variable "it"
+                .findAll()
+                .map {
+                    GameDto().apply { // Zugriff auf das neuw GameDto mit "this"
+                        this.id = it.id
+                        this.initialItems = it.initialItems
+                        // ..
+                    }
+                }
+```
+
+
 ### createGame()
 
 Diese Funktion soll ein neues Spiel anlegen. Aus dem Funktionsparameter vom Typ `NewGameDto` soll eine
