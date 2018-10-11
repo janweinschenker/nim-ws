@@ -8,3 +8,6 @@
    * Die Funktion soll einen Text auf der Konsole ausgeben.
 1. Diese Funktion wird automatisch ausgeführt, wenn das Projekt mit dem Befehl `$ mvn spring-boot:run` ausgeführt wird.
    * Teste, ob das funktioniert.
+
+   
+Kotlin Doku: [https://kotlinlang.org/docs/reference/basic-syntax.html]()
