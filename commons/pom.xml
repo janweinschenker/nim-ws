@@ -30,10 +30,6 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-bus</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${mapstruct-jdk8.version}</version>
@@ -66,10 +62,6 @@
             <groupId>io.github.microutils</groupId>
             <artifactId>kotlin-logging</artifactId>
             <version>${kotlin-logging.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-coroutines-core</artifactId>
         </dependency>
 
         <!-- Test -->

@@ -14,7 +14,7 @@ In der Datei `GameEntity.kt` soll eine Klasse `GameEntity` angelegt werden.
 
 Die Klasse soll eine JPA-Entity sein und über folgende Properties verfügen:
 
-- `id` vom Typ `Long`  
+- `id` vom Typ `String`  
 - `initialItems` vom Typ `Int`  
 - `remainingItems` vom Typ `Int`  
 - `finished` vom Typ `Boolean`  
@@ -53,7 +53,7 @@ Wird der Logger folgendermaßen verfügbar gemacht:
 
 ```kotlin
    // ...
-   logger.debug{"This is a log message"}
+   logger.debug {"This is a log message"}
    // ...
 ```
 
@@ -75,7 +75,7 @@ Ein Spielzug ist nicht valide wenn:
 - ein Spieler einen Spielzug macht, der gemäß der Property `game.nextPlayer` nicht an der Reihe ist
 - durch einen Spielzug mehr Hölzer genommen werden sollen, als in `gameEntity.remainingItems` verfügbar sind.
 
-Für jede fehlgeschlagene Validierung soll eine Fehlemeldung in das Set in `ValidationResult`
+Für jede fehlgeschlagene Validierung soll eine Fehlermeldung in das Set in `ValidationResult`
 
 
 ### Funktion play()
@@ -98,7 +98,7 @@ Der Rückgabewert von `pair()` ist `Pair<GameEntity, ValidationResult>`
   - die Property `game.nextPlayer` beim Verlassen der Funktion den Wert des nächsten Spielers hat. Dieser Wert muss 
   ungleich dem Wert `game.nextPlayer` zum Aufrufzeitpunkt der Methode sein.
   - die Property `game.finished` auf `true` gesetzt wird, sofern die Substraktion von
-  `gameEntity.remainingItems` um den Wert `numberOfItems` zum Ergebnis `1` geführt hat. In diesem Fall muss auch
+  `gameEntity.remainingItems` um den Wert `numberOfItems` zum Ergebnis `1` oder `0` geführt hat. In diesem Fall muss auch
   die Property `gameEntity.winner` korrekt gesetzt werden.
 
 ## GameRestController
@@ -111,7 +111,7 @@ Die Klasse soll ein Spring Rest-Controller sein.
 
 Über Dependency-Injection sollen die Klassen `GameRepository` und `GameEngine` injziert werden.
 
-Es müssen drei Funktionen implementiert werden.
+Es müssen die drei Funktionen des Interfaces implementiert werden.
 
 ### getGames()
 
@@ -138,12 +138,15 @@ sie auf den Typ `GameDto` konvertiert werden und als `ResponseEntity<List<GameDt
 Diese Funktion soll ein neues Spiel anlegen. Aus dem Funktionsparameter vom Typ `NewGameDto` soll eine
 Instanz von `GameEntity` erzeugt und persistiert werden.
 
-Als Rückgabewert soll eine URL auf das neu angelegte Spiel zurückgegeben werden. Beispiel:
+Als Rückgabewert die Game ID zurückgeliefert werden. Außerdem soll im `Location` Header die relative URL auf das Spiel gesetzt werden. Beispiel:
 
 ```kotlin
-return ResponseEntity
-    .created(URI("/game/${gameEntity.id}")
-    .build()
+        // Create uri to game and return it
+        val headers = HttpHeaders().apply {
+            location = URI("/game/${savedGame.id}")
+        }
+
+return ResponseEntity(savedGame.id, headers, HttpStatus.CREATED)
 ```
    
 

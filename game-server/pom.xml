@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>gameEntity-server</artifactId>
+    <artifactId>game-server</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -169,7 +169,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.build.directory}/swagger-model/swagger.yml</inputSpec>
-                            <templateDirectory>src/main/resources/swaggerTemplates</templateDirectory>
+                            <templateDirectory>src/main/swaggerTemplates</templateDirectory>
                             <language>spring</language>
                             <apiPackage>${application.api-package}</apiPackage>
                             <modelPackage>${application.model-package}</modelPackage>
