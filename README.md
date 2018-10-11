@@ -22,7 +22,7 @@ Die Klasse soll eine JPA-Entity sein und über folgende Properties verfügen:
 - `remainingItems` vom Typ `Int`  
 - `finished` vom Typ `Boolean`  
 - `nextPlayer` vom Typ `Players`  
-- `winner` vom Typ `Players` (nullable)
+- `winner` vom Typ `Players`-Enum (nullable)
 
 Die Klasse soll einen Konstruktor bekommen, in dem ein Wert für die Property `initialItems` gesetzt werden
 kann.
