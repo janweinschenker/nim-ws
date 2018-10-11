@@ -7,6 +7,9 @@ In dieser Aufgabe wird es darum gehen, folgende Komponenten zu bauen:
 - Persistenz
    - Eine Entity-Klasse, um Spiele via JPA zu speichern
    - Eine Repository-Klasse, die CRUD-Operationen ermöglicht
+
+## Kotlin Doku
+[https://kotlinlang.org/docs/reference/basic-syntax.html]()
    
 ## GameEntity
 
