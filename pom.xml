@@ -22,18 +22,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<kotlin.version>1.2.61</kotlin.version>
+		<kotlin.version>1.2.71</kotlin.version>
 
 
-		<!-- Need at least 1.1.x for compatibility with Surefire -->
-		<junit-platform.version>1.1.1</junit-platform.version>
-
-		<!-- Need at least 5.1.x for compatibility with Surefire -->
-		<junit-jupiter.version>5.1.1</junit-jupiter.version>
-
-		<!-- TODO remove once a newer version of surefire (2.21.1+) is compatible with JUnit 5 and used by Spring Boot -->
-		<!-- Reference: https://github.com/junit-team/junit5/issues/809 -->
-		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
 		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
 		<mockk.version>1.8.6</mockk.version>
 		<kotlin-logging.version>1.5.9</kotlin-logging.version>
