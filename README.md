@@ -9,8 +9,8 @@ In dieser Aufgabe wird es darum gehen, folgende Komponenten zu bauen:
    - Eine Repository-Klasse, die CRUD-Operationen ermöglicht
 
 ## Kotlin Doku
-[https://kotlinlang.org/docs/reference/basic-syntax.html]()
-   
+[https://kotlinlang.org/docs/reference/basic-syntax.html](https://kotlinlang.org/docs/reference/basic-syntax.html)
+
 ## GameEntity
 
 In der Datei `GameEntity.kt` soll eine Klasse `GameEntity` angelegt werden.
@@ -91,14 +91,14 @@ Diese Klasse `GameEngine` soll genau eine Funktion `play()` implementieren. Dere
    - dieser Parameter wird angeben, wieviele Hölzer im aktuellen Spielzug antnommen werden
 - `player` vom Typ `Players`  
    - dieser Parameter wird angeben, welcher Spieler gerade spielt.
-   
+
 Der Rückgabewert von `pair()` ist `Pair<GameEntity, ValidationResult>`
 
 ### Constraints
 
-- `play()` muss dafür sorgen, dass 
+- `play()` muss dafür sorgen, dass
   - die Property `gameEntity.remainingItems` um den Wert `numberOfItems` subtrahiert wird.
-  - die Property `game.nextPlayer` beim Verlassen der Funktion den Wert des nächsten Spielers hat. Dieser Wert muss 
+  - die Property `game.nextPlayer` beim Verlassen der Funktion den Wert des nächsten Spielers hat. Dieser Wert muss
   ungleich dem Wert `game.nextPlayer` zum Aufrufzeitpunkt der Methode sein.
   - die Property `game.finished` auf `true` gesetzt wird, sofern die Substraktion von
   `gameEntity.remainingItems` um den Wert `numberOfItems` zum Ergebnis `1` oder `0` geführt hat. In diesem Fall muss auch
@@ -106,7 +106,7 @@ Der Rückgabewert von `pair()` ist `Pair<GameEntity, ValidationResult>`
 
 ## GameRestController
 
-In der Datei `GameRestController.kt` soll eine Klasse angelegt werden, die vom 
+In der Datei `GameRestController.kt` soll eine Klasse angelegt werden, die vom
 Interface `org.example.demo.rest.api.GameApi` erbt und alle davon abgeleiteten
 Methoden implementieren
 
@@ -151,7 +151,7 @@ Als Rückgabewert die Game ID zurückgeliefert werden. Außerdem soll im `Locati
 
 return ResponseEntity(savedGame.id, headers, HttpStatus.CREATED)
 ```
-   
+
 
 ### play()
 
@@ -182,4 +182,4 @@ class GameNotFoundException : RuntimeException()
 ```
 
 Wird die `GameNotFoundException` in einer Funktion geworfen, die auf einen HTTP-Endpunkt gemappt ist,
-so gibt dieser Endpunkt als Response den hier definierten HTTP-Fehlercode zurück. 
+so gibt dieser Endpunkt als Response den hier definierten HTTP-Fehlercode zurück.
