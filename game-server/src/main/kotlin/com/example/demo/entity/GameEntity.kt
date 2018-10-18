@@ -11,14 +11,10 @@ import javax.persistence.Table
  */
 @Entity
 @Table(name = "game")
-class GameEntity(@Id
-                 var id: String = Random().nextLong().toString(),
-                 var initialItems: Int,
-                 var remainingItems: Int = initialItems,
-                 var finished: Boolean = false,
-                 var nextPlayer: Players = Players.HUMAN,
-                 var winner: Players? = null) {
-
-    // Empty constructor needed for mapstruct.
-    constructor() : this(initialItems = 13)
-}
+data class GameEntity(
+        @Id val id: String = Random().nextLong().toString(),
+        val initialItems: Int = 13,
+        var remainingItems: Int = initialItems,
+        var finished: Boolean = false,
+        var nextPlayer: Players = Players.HUMAN,
+        var winner: Players? = null)
