@@ -59,6 +59,6 @@ class GameRestController(
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Game does not exist.")
 class GameNotFoundException : RuntimeException()
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "This move is not valid.")
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 class IllegalMoveException(override val message: String?) : RuntimeException(message)
 
