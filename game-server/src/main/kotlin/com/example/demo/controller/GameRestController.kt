@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import reactor.bus.EventBus
 import java.net.URI
 import javax.validation.Valid
 
@@ -90,7 +89,7 @@ class GameRestController(
         val (playedGame, validation) = gameEngine.play(game, turn.takenItems, Players.valueOf(turn.player.name))
 
         if (validation.isValid()) {
-            val savedGame = gameRepository.save(playedGame)
+            val savedGame = gameRepository.save(playedGame).apply { makeComputerMove(this) }
             val gameDto = GameDto().apply {
                 this.id = savedGame.id
                 this.initialItems = savedGame.initialItems
@@ -105,11 +104,17 @@ class GameRestController(
         }
     }
 
+    private fun makeComputerMove(game: GameEntity): GameEntity {
+        if (game.finished) return game
+        val result = this.gameEngine.play(game, 1, Players.COMPUTER)
+        return gameRepository.save(result.first)
+    }
+
 }
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Game does not exist.")
 class GameNotFoundException : RuntimeException()
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "This move is not valid.")
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 class IllegalMoveException(override val message: String?) : RuntimeException(message)
 

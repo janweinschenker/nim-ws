@@ -15,6 +15,7 @@ class GameEngine {
 
     @VisibleForTesting
     internal fun validateTurn(game: GameEntity, itemsToBeTaken: Int, playerMakingAMove: Players): ValidationResult {
+        logger.info { "Validating turn in ${game.id} for $playerMakingAMove" }
         val validationResult = ValidationResult()
 
         if (game.finished) validationResult.violations.add("Game finished. No more turns allowed.")
@@ -27,12 +28,12 @@ class GameEngine {
     }
 
     fun play(game: GameEntity, numberOfItems: Int, player: Players): Pair<GameEntity, ValidationResult> {
-
+        logger.info { "$player wants to take $numberOfItems items in ${game.id}." }
         val validationResult = validateTurn(game, numberOfItems, player)
 
         // Early exit at invalid game
         if (!validationResult.isValid()) {
-            logger.debug { "Invalid turn for game ${game.id}: ${validationResult.violations.joinToString()}" }
+            logger.info { "Invalid turn for game ${game.id}: ${validationResult.violations.joinToString()}" }
             return Pair(game, validationResult)
         }
 
