@@ -13,6 +13,19 @@ class GameEngine {
 
     companion object : KLogging()
 
+    @VisibleForTesting
+    internal fun validateTurn(game: GameEntity, itemsToBeTaken: Int, playerMakingAMove: Players): ValidationResult {
+        val validationResult = ValidationResult()
+
+        if (game.finished) validationResult.violations.add("Game finished. No more turns allowed.")
+        if (game.nextPlayer != playerMakingAMove) validationResult.violations.add("Next player is ${game.nextPlayer}.")
+        if (itemsToBeTaken > game.remainingItems) validationResult.violations.add("Unable to take $itemsToBeTaken when only ${game.remainingItems} remain.")
+        if (itemsToBeTaken < 1) validationResult.violations.add("You should at least take 1 item.")
+        if (itemsToBeTaken > 3) validationResult.violations.add("You should not take more than 3 items.")
+
+        return validationResult
+    }
+
     fun play(game: GameEntity, numberOfItems: Int, player: Players): Pair<GameEntity, ValidationResult> {
 
         val validationResult = validateTurn(game, numberOfItems, player)
@@ -42,19 +55,6 @@ class GameEngine {
         }
 
         return Pair(game, validationResult)
-    }
-
-    @VisibleForTesting
-    internal fun validateTurn(game: GameEntity, itemsToBeTaken: Int, playerMakingAMove: Players): ValidationResult {
-        val validationResult = ValidationResult()
-
-        if (game.finished) validationResult.violations.add("Game finished. No more turns allowed.")
-        if (game.nextPlayer != playerMakingAMove) validationResult.violations.add("Next player is ${game.nextPlayer}.")
-        if (itemsToBeTaken > game.remainingItems) validationResult.violations.add("Unable to take $itemsToBeTaken when only ${game.remainingItems} remain.")
-        if (itemsToBeTaken < 1) validationResult.violations.add("You should at least take 1 item.")
-        if (itemsToBeTaken > 3) validationResult.violations.add("You should not take more than 3 items.")
-
-        return validationResult
     }
 
 }
