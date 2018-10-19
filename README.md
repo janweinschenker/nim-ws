@@ -70,7 +70,7 @@ Führe den `GameEngineValidationTest` aus, um zu prüfen, ob Deine Implementieru
 
 ### Ausführen von Spielzügen
 
-Diese Klasse `GameEngine` soll genau eine Funktion `play()` implementieren. Deren Parameter sollen sein:
+Diese Klasse `GameEngine` soll eine Funktion `play()` implementieren. Deren Parameter sollen sein:
 
 - `game` vom Typ `GameEntity`
    - dieser Parameter wird den Zustand eines Spiels vor dem aktuellen Spielzug enthalten.
@@ -79,22 +79,22 @@ Diese Klasse `GameEngine` soll genau eine Funktion `play()` implementieren. Dere
 - `player` vom Typ `Players`  
    - dieser Parameter wird angeben, welcher Spieler gerade spielt.
 
-Der Rückgabewert von `pair()` ist `Pair<GameEntity, ValidationResult>`
+Die Funktion sollte als erstes prüfen, ob der Spielzug valide ist. Danach muss der Spielzug ausgeführt werden. 
+
+Das Ergebnis ist ein `Pair<GameEntity, ValidationResult>`, welches die Funktion zurückliefert.
 
 ### Constraints
 
 - `play()` muss dafür sorgen, dass
-  - die Property `gameEntity.remainingItems` um den Wert `numberOfItems` subtrahiert wird.
-  - die Property `game.nextPlayer` beim Verlassen der Funktion den Wert des nächsten Spielers hat. Dieser Wert muss
-  ungleich dem Wert `game.nextPlayer` zum Aufrufzeitpunkt der Methode sein.
+  - die Anzahl der Hölzchen im Spiel um die Anzahl der gezogenen Hölzchen vermindert wird.
+  - der `nextPlayer` im `game` geändert wird (wenn nötig).
   - die Property `game.finished` auf `true` gesetzt wird, sofern die Substraktion von
   `gameEntity.remainingItems` um den Wert `numberOfItems` zum Ergebnis `1` oder `0` geführt hat. In diesem Fall muss auch
   die Property `gameEntity.winner` korrekt gesetzt werden.
 
 ## GameRestController
 
-In der Datei `GameRestController.kt` soll eine Klasse angelegt werden, die das
-Interface `org.example.demo.rest.api.GameApi` implementiert.
+Der `GameRestController`, der von der generierten `GameApi` erbt, soll implementiert werden.
 
 Die Klasse soll ein Spring Rest-Controller sein.
 
@@ -107,13 +107,13 @@ Es müssen die drei Funktionen des Interfaces implementiert werden.
 Diese Funktion soll alle vorhandenen Entitäten vom Typ `GameEntity` aus der Datenbank abfragen. Danach sollen
 sie auf den Typ `GameDto` konvertiert werden und als `ResponseEntity<List<GameDto>>` zurückgegeben werden.
 
-#### Tipp: Konvertieren mit .apply()
+#### Konvertieren mit .apply()
 
 ```kotlin
  gameRepository // gibt GameEntity zurück in der Variable "it"
                 .findAll()
                 .map {
-                    GameDto().apply { // Zugriff auf das neuw GameDto mit "this"
+                    GameDto().apply { // Zugriff auf das neue GameDto mit "this"
                         this.id = it.id
                         this.initialItems = it.initialItems
                         // ..
@@ -121,13 +121,24 @@ sie auf den Typ `GameDto` konvertiert werden und als `ResponseEntity<List<GameDt
                 }
 ```
 
+#### Konvertieren mit Extension Function
+
+Wir werden die Umwandlung von `GameEntity` in `GameDTO` noch öfter benötigen. Lagere die Umwandlung in eine Extension Function aus. Die Funktion kann im Controller auf package level definiert werden.
+
+#### Swagger UI
+
+Wenn Du die Funktion implementiert hast, kannst Du die Schnittstelle über die Swagger-UI ausprobiern. 
+
+* `cd game-server && mvn spring-boot:run`
+* Öffne [http://localhost:8080/swagger-ui.html]()
+
 
 ### createGame()
 
 Diese Funktion soll ein neues Spiel anlegen. Aus dem Funktionsparameter vom Typ `NewGameDto` soll eine
 Instanz von `GameEntity` erzeugt und persistiert werden.
 
-Als Rückgabewert die Game ID zurückgeliefert werden. Außerdem soll im `Location` Header die relative URL auf das Spiel gesetzt werden. Beispiel:
+Als Rückgabewert soll die Game ID zurückgeliefert werden. Außerdem soll im `Location` Header die relative URL auf das Spiel gesetzt werden. Beispiel:
 
 ```kotlin
         // Create uri to game and return it
@@ -147,7 +158,7 @@ die Daten des durchzuführenden Spielzugs übergeben.
 Zunächst muss anhand der Spiel-ID das existierende Spiel als `GameEntity` aus der Datenbank geladen werden.
 
 Danach wird die `GameEntity` zusammen mit der Anzahl der genommenen Hölzer und dem Spielertyp an die
-Funktion `GameEngine.play()` übergeben.
+Funktion `gameEngine.play()` übergeben.
 
 Bei einem validen Spielzug soll der neue Spielzustand persistiert und als `GameDto` zurück gegeben werden.
 
@@ -158,14 +169,13 @@ Bei einem Spielzug für ein nicht existierendes Spiel (Spiel-ID in DB unbekannt)
 mit Fehlerstatuscode 404 (Not Found) zurückgegeben werden.
 
 
-#### Tipp: Werfen von Exceptions, um in REST-Controllern HTTP-Fehlercodes zurückzugeben
+#### Werfen von Exceptions, um in REST-Controllern HTTP-Fehlercodes zurückzugeben
 
-In der Datei `GameRestController.kt` kann folgende Exception definiert werden.
+Du findest im `GameRestController` bereits zwei Exceptions, die mit Annotationen versehen sind. Wird eine solche Exception in diesem Controller geworfen, wird sie von Spring gefangen und Spring generiert eine entsprechende Antwort an den Client. 
 
 ```kotlin
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Game does not exist.")
 class GameNotFoundException : RuntimeException()
 ```
 
-Wird die `GameNotFoundException` in einer Funktion geworfen, die auf einen HTTP-Endpunkt gemappt ist,
-so gibt dieser Endpunkt als Response den hier definierten HTTP-Fehlercode zurück.
+Wird die `GameNotFoundException` in einer Funktion geworfen, so liefert Spring einen Http Status 400 zurück.
