@@ -1,6 +1,6 @@
 package com.example.demo.engine
 
-import com.example.demo.common.model.Players
+import com.example.demo.entity.Players
 import com.example.demo.entity.GameEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

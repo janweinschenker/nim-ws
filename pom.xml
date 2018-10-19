@@ -28,7 +28,6 @@
 		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
 		<kotlin-logging.version>1.5.9</kotlin-logging.version>
 		<kotlinx-coroutines-core.version>0.25.0</kotlinx-coroutines-core.version>
-		<mapstruct-jdk8.version>1.2.0.Final</mapstruct-jdk8.version>
 		<reactor-bus.version>2.0.8.RELEASE</reactor-bus.version>
 	</properties>
 
@@ -51,18 +50,6 @@
 				<groupId>com.example</groupId>
 				<artifactId>commons</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-
-			<!-- Mapstruct -->
-			<dependency>
-				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct-jdk8</artifactId>
-				<version>${mapstruct-jdk8.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct</artifactId>
-				<version>${mapstruct-jdk8.version}</version>
 			</dependency>
 
 			<!-- Swagger -->
@@ -143,18 +130,11 @@
 						<configuration>
 							<sourceDirs>
 								<sourceDir>src/main/kotlin</sourceDir>
-								<sourceDir>src/main/java</sourceDir>
+								<!--<sourceDir>src/main/java</sourceDir>-->
 							</sourceDirs>
 							<compilerPlugins>
 								<plugin>spring</plugin>
 							</compilerPlugins>
-							<annotationProcessorPaths>
-								<annotationProcessorPath>
-									<groupId>org.mapstruct</groupId>
-									<artifactId>mapstruct-processor</artifactId>
-									<version>${mapstruct-jdk8.version}</version>
-								</annotationProcessorPath>
-							</annotationProcessorPaths>
 						</configuration>
 					</execution>
 					<execution>

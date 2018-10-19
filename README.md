@@ -11,9 +11,13 @@ In dieser Aufgabe wird es darum gehen, folgende Komponenten zu bauen:
 ## Kotlin Doku
 [https://kotlinlang.org/docs/reference/basic-syntax.html](https://kotlinlang.org/docs/reference/basic-syntax.html)
 
+## Vorbereitung
+
+Führe im root `mvn clean install -Dmaven.test.skip` aus. 
+
 ## GameEntity
 
-In der Datei `GameEntity.kt` soll eine Klasse `GameEntity` angelegt werden.
+Öffne die Datei `GameEntity.kt`.
 
 Die Klasse soll eine JPA-Entity sein und über folgende Properties verfügen:
 
@@ -24,8 +28,7 @@ Die Klasse soll eine JPA-Entity sein und über folgende Properties verfügen:
 - `nextPlayer` vom Typ `Players`  
 - `winner` vom Typ `Players`-Enum (nullable)
 
-Die Klasse soll einen Konstruktor bekommen, in dem ein Wert für die Property `initialItems` gesetzt werden
-kann.
+Die Klasse soll einen Konstruktor bekommen, in dem ein Wert für die Property `initialItems` gesetzt werden kann. Ergänze die Properties und überlege, ob der Konstruktorparameter jeweils ein `val` oder `var` sein kann.
 
 ## GameRepository
 
@@ -37,51 +40,35 @@ Dieses Interface soll ein JPA-Repository für die Entity `GameEntity` sein.
 
 In der Datei `GameEngine.kt` soll eine Klasse `GameEngine` als Spring-Service angelegt werden.
 
-#### Tipp: Logging mit KLogging
-
-In diesem Projekt ist das Logging mit dem Framework KLogging verfügbar.
-
-Durch diese Anweisung:
-
-```kotlin
-class GameEngine {
-
-    /**
-     * define KLogging() as companion object
-     */
-   companion object : KLogging()
-```
-
-Wird der Logger folgendermaßen verfügbar gemacht:
-
-```kotlin
-   // ...
-   logger.debug {"This is a log message"}
-   // ...
-```
-
 ### Datenklasse ValidationResult
 
-In der Datei `GameEngine.kt` soll weiterhin eine Datenklasse `ValidationResult` angelegt werden.
+In der Datei `GameEngine.kt` ist eine `data class` `ValidationResult` vorhanden, die Du erweitern musst.
 
 `ValidationResult` soll eine Funktion `isValid()` anbieten, deren Rückgabewert den Typ Boolean hat.
 
 Die Klasse soll ein Set (`MutableSet` von `String`) enthalten. In diesem Set sollen Fehlermeldungen als Strings
 gespeichert werden, die nach einer Validierung eines Spielzugs anfallen.
 
-`isValid()` soll den Wert `true` zurückgeben, wenn das o.g. Set leer ist.
+`isValid()` soll den Wert `true` zurückgeben, wenn das oben genannte Set leer ist.
 
 ### Validierung von Spielzügen
 
+Als nächstes musst Du die `validateTurn()` Funktion implementieren, die das `ValidationResult` befüllt.
+
 Ein Spielzug ist nicht valide wenn:
-- er auf einem Spiel ausgeführt werden soll, `game.finished` den Wert `true` hat
-- ein Spieler einen Spielzug macht, der gemäß der Property `game.nextPlayer` nicht an der Reihe ist
-- durch einen Spielzug mehr Hölzer genommen werden sollen, als in `gameEntity.remainingItems` verfügbar sind.
 
-Für jede fehlgeschlagene Validierung soll eine Fehlermeldung in das Set in `ValidationResult`
+* er auf einem Spiel ausgeführt werden soll, das bereits beendet ist
+* ein Spieler einen Spielzug macht, der nicht an der Reihe ist
+* durch einen Spielzug mehr Hölzer genommen werden sollen, als verfügbar sind
+* ein Spieler weniger als ein Hölzchen nimmt
+* ein Spieler mehr als drei Hölzchen nimmt
+
+Für jede fehlgeschlagene Validierung soll eine Fehlermeldung in das Set in `ValidationResult`.
+
+Führe den `GameEngineValidationTest` aus, um zu prüfen, ob Deine Implementierung der Spezifikation entspricht.
 
 
-### Funktion play()
+### Ausführen von Spielzügen
 
 Diese Klasse `GameEngine` soll genau eine Funktion `play()` implementieren. Deren Parameter sollen sein:
 

@@ -1,4 +1,4 @@
-package com.example.demo.common.model
+package com.example.demo.entity
 
 fun otherPlayer(player: Players): Players = when (player) {
     Players.HUMAN -> Players.COMPUTER
