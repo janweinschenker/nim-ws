@@ -106,9 +106,8 @@ Der Rückgabewert von `pair()` ist `Pair<GameEntity, ValidationResult>`
 
 ## GameRestController
 
-In der Datei `GameRestController.kt` soll eine Klasse angelegt werden, die vom
-Interface `org.example.demo.rest.api.GameApi` erbt und alle davon abgeleiteten
-Methoden implementieren
+In der Datei `GameRestController.kt` soll eine Klasse angelegt werden, die das
+Interface `org.example.demo.rest.api.GameApi` implementiert.
 
 Die Klasse soll ein Spring Rest-Controller sein.
 
