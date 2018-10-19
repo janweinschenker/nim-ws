@@ -1,6 +1,5 @@
 package com.example.demo.entity
 
-import com.example.demo.common.model.Players
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id

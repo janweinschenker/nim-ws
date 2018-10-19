@@ -1,6 +1,6 @@
 package com.example.demo.controller
 
-import com.example.demo.common.model.Players
+import com.example.demo.entity.Players
 import com.example.demo.engine.GameEngine
 import com.example.demo.entity.GameEntity
 import com.example.demo.repo.GameRepository

@@ -52,16 +52,6 @@
             <artifactId>commons</artifactId>
         </dependency>
 
-        <!-- Mapstruct -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-
         <!-- Reactor -->
         <dependency>
             <groupId>io.projectreactor</groupId>
@@ -109,6 +99,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-script-runtime</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -146,7 +142,7 @@
                             <outputDirectory>${project.build.directory}/swagger-model</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>../commons/src/main/resources</directory>
+                                    <directory>../commons/src/main/swagger</directory>
                                 </resource>
                             </resources>
                         </configuration>

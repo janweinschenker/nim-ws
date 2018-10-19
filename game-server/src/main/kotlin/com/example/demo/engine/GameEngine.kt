@@ -1,7 +1,7 @@
 package com.example.demo.engine
 
-import com.example.demo.common.model.Players
-import com.example.demo.common.model.otherPlayer
+import com.example.demo.entity.Players
+import com.example.demo.entity.otherPlayer
 import com.example.demo.entity.GameEntity
 import com.google.common.annotations.VisibleForTesting
 import mu.KLogging
