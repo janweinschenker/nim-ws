@@ -7,7 +7,7 @@ package com.example.demo
 open class Application
 
 fun main(args: Array<String>) {
-    runApplication<DemoApplication>(*args)
+    runApplication<Application>(*args)
     println("Hallo Welt")
 }
 ```
@@ -17,4 +17,4 @@ fun main(args: Array<String>) {
 3. Du solltest "Hallo Welt" auf der Konsole sehen
 
    
-Kotlin Doku: [https://kotlinlang.org/docs/reference/basic-syntax.html]()
+Kotlin Doku: [https://kotlinlang.org/docs/reference/basic-syntax.html](https://kotlinlang.org/docs/reference/basic-syntax.html)
