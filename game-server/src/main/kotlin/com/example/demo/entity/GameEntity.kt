@@ -17,4 +17,4 @@ data class GameEntity(
         var remainingItems: Int = initialItems,
         var finished: Boolean = false,
         var nextPlayer: Players = Players.HUMAN,
-        var winner: Players? = null)
+        var winner: Players?)
