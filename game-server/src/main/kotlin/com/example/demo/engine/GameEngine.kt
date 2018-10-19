@@ -33,4 +33,4 @@ class GameEngine {
 }
 
 // FIXME ValidationResult needs to hold a suitable collection of violations
-data class ValidationResult(val removeMe: Any? = null)
+data class ValidationResult(val replaceMe: Any? = null)
